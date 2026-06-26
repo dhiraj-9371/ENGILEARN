@@ -1,0 +1,27 @@
+{% extends 'core/base.html' %}
+{% block title %}Attendance | SmartClass{% endblock %}
+{% block page_title %}Mark attendance{% endblock %}
+{% block page_subtitle %}Save the present or absent status for students in {{ classroom.title }}.{% endblock %}
+{% block content %}
+<div class="content-panel">
+    <div class="panel-header"><div><h3>{{ classroom.title }}</h3><p>Choose status for each student and save today's attendance record.</p></div></div>
+    <form method="post">
+        {% csrf_token %}
+        <div class="table-responsive table-wrap-modern">
+            <table class="table modern-table align-middle mb-0">
+                <thead><tr><th>#</th><th>Student</th><th>Status</th></tr></thead>
+                <tbody>
+                    {% for student in students %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td><div class="fw-semibold">{{ student.get_full_name|default:student.username }}</div><div class="small card-muted">@{{ student.username }}</div></td>
+                        <td><select name="status_{{ student.id }}" class="form-select no-auto-style"><option value="present">Present</option><option value="absent">Absent</option></select></td>
+                    </tr>
+                    {% empty %}<tr><td colspan="3" class="text-center py-4">No students enrolled in this classroom.</td></tr>{% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="d-flex gap-3 flex-wrap mt-4"><button class="btn btn-gradient" type="submit">Save attendance</button><a href="{% url 'classroom_detail' classroom.id %}" class="btn btn-soft">Back to classroom</a></div>
+    </form>
+</div>
+{% endblock %}

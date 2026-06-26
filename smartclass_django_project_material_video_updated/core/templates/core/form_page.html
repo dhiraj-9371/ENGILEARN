@@ -1,0 +1,18 @@
+{% extends 'core/base.html' %}
+{% block title %}{{ title }} | SmartClass{% endblock %}
+{% block page_title %}{{ title }}{% endblock %}
+{% block page_subtitle %}Complete the form below and save your details using the polished responsive layout.{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-xl-10 col-xxl-8">
+        <div class="content-panel">
+            <div class="panel-header"><div><h3>{{ title }}</h3><p>Fill in the required information and continue the workflow.</p></div></div>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% include 'core/partials/form_fields.html' with form=form %}
+                <div class="d-flex flex-wrap gap-3 mt-3"><button class="btn btn-gradient" type="submit">Save details</button><a href="javascript:history.back()" class="btn btn-soft">Go back</a></div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

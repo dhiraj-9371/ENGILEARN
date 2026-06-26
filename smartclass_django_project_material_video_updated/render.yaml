@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: engilearn
+    env: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn smartclass.wsgi:application"

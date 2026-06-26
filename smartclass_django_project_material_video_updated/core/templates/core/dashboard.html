@@ -1,0 +1,139 @@
+{% extends 'core/base.html' %}
+{% block title %}Dashboard | SmartClass{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+{% block page_subtitle %}Track classes, academic activity, materials, submissions, and latest updates from one smart workspace.{% endblock %}
+{% block content %}
+<div class="dashboard-hero mb-4">
+    <div class="row g-4 align-items-center">
+        <div class="col-lg-8">
+            <div class="hero-card">
+                <div class="hero-badge"><i class="fa-solid fa-sparkles"></i> ENGI-LEARN workspace</div>
+                <h2 class="hero-title">Welcome back, {{ user.first_name|default:user.username }}</h2>
+                <p class="hero-text">Manage classrooms, study materials, handwritten notes, assignments, attendance, quizzes, and announcements with a cleaner professional dashboard.</p>
+                <div class="hero-actions">
+                    <a href="{% url 'classroom_list' %}" class="btn btn-gradient"><i class="fa-solid fa-chalkboard-user me-2"></i>View classrooms</a>
+                    {% if profile.role == 'teacher' %}
+                    <a href="{% url 'create_classroom' %}" class="btn btn-soft"><i class="fa-solid fa-plus me-2"></i>Create classroom</a>
+                    {% elif profile.role == 'student' %}
+                    <a href="{% url 'join_classroom' %}" class="btn btn-soft"><i class="fa-solid fa-right-to-bracket me-2"></i>Join classroom</a>
+                    {% if request.user.profile.role == 'student' %}
+                    <a href="{% url 'student_profile' %}" class="btn btn-soft btn-sm">My Student Profile</a>
+                    <a href="{% url 'student_profile_edit' %}" class="btn btn-gradient btn-sm">Create / Edit Profile</a>
+                    {% endif %}
+                    
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="hero-side-card h-100">
+                <div class="side-mini-label">Account summary</div>
+                <div class="side-user-row">
+                    <div class="side-avatar">{{ user.first_name|default:user.username|first|upper }}</div>
+                    <div>
+                        <div class="fw-semibold fs-5">{{ user.get_full_name|default:user.username }}</div>
+                        <div class="text-capitalize text-muted">{{ profile.role }}</div>
+                    </div>
+                </div>
+                <div class="mini-status-grid">
+                    <div class="mini-status-box"><span>Role</span><strong class="text-capitalize">{{ profile.role }}</strong></div>
+                    <div class="mini-status-box"><span>Workspace</span><strong>Active</strong></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    {% for key, value in stats.items %}
+    <div class="col-sm-6 col-xl-3">
+        <div class="dashboard-stat-card h-100">
+            <div class="stat-top">
+                <div class="stat-icon {% if forloop.counter == 1 %}icon-blue{% elif forloop.counter == 2 %}icon-green{% elif forloop.counter == 3 %}icon-orange{% else %}icon-purple{% endif %}">
+                    {% if forloop.counter == 1 %}<i class="fa-solid fa-chalkboard"></i>{% elif forloop.counter == 2 %}<i class="fa-solid fa-book-open"></i>{% elif forloop.counter == 3 %}<i class="fa-solid fa-file-circle-check"></i>{% else %}<i class="fa-solid fa-bullhorn"></i>{% endif %}
+                </div>
+                <div class="stat-trend">Live</div>
+            </div>
+            <div class="stat-label">{{ key|title }}</div>
+            <div class="stat-value">{{ value }}</div>
+            <div class="stat-subtext">Updated from your ENGI-LEARN activity</div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="row g-4">
+    <div class="col-xl-8">
+        <div class="content-panel h-100">
+            <div class="panel-header">
+                <div>
+                    <h3>Your classrooms</h3>
+                    <p>Open classroom spaces and continue your academic work quickly.</p>
+                </div>
+                <div class="panel-actions">
+                    <a href="{% url 'classroom_list' %}" class="btn btn-soft btn-sm"><i class="fa-solid fa-eye me-1"></i>View all</a>
+                    {% if profile.role == 'teacher' %}
+                    <a href="{% url 'create_classroom' %}" class="btn btn-gradient btn-sm"><i class="fa-solid fa-plus me-1"></i>Create</a>
+                    {% elif profile.role == 'student' %}
+                    <a href="{% url 'join_classroom' %}" class="btn btn-gradient btn-sm"><i class="fa-solid fa-right-to-bracket me-1"></i>Join</a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="row g-4">
+                {% for classroom in classrooms %}
+                <div class="col-md-6">
+                    <div class="classroom-dashboard-card h-100">
+                        <div class="classroom-card-top">
+                            <div>
+                                <h5>{{ classroom.title }}</h5>
+                                <div class="classroom-subject">{{ classroom.subject }}</div>
+                            </div>
+                            <span class="class-code-badge">{{ classroom.class_code }}</span>
+                        </div>
+                        <div class="classroom-meta">
+                            <span><i class="fa-regular fa-calendar me-1"></i>{{ classroom.created_at|date:"d M Y" }}</span>
+                            {% if classroom.teacher %}<span><i class="fa-regular fa-user me-1"></i>{{ classroom.teacher.get_full_name|default:classroom.teacher.username }}</span>{% endif %}
+                        </div>
+                        <div class="classroom-tags"><span class="mini-tag">Materials</span><span class="mini-tag">Assignments</span><span class="mini-tag">Attendance</span></div>
+                        <div class="mt-3"><a href="{% url 'classroom_detail' classroom.id %}" class="btn btn-gradient btn-sm w-100"><i class="fa-solid fa-arrow-up-right-from-square me-2"></i>Open classroom</a></div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-12">
+                    <div class="empty-state-card">
+                        <div class="empty-icon"><i class="fa-solid fa-school"></i></div>
+                        <h5>No classrooms available yet</h5>
+                        <p>This account does not have any classroom records yet.</p>
+                        {% if profile.role == 'teacher' %}<a href="{% url 'create_classroom' %}" class="btn btn-gradient btn-sm">Create your first classroom</a>{% elif profile.role == 'student' %}<a href="{% url 'join_classroom' %}" class="btn btn-gradient btn-sm">Join a classroom</a>{% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4">
+        <div class="d-grid gap-4">
+            <div class="content-panel">
+                <div class="panel-header"><div><h3>Quick actions</h3><p>Useful shortcuts for daily work.</p></div></div>
+                <div class="quick-action-grid">
+                    <a href="{% url 'classroom_list' %}" class="quick-action-card"><i class="fa-solid fa-chalkboard-user"></i><span>Classrooms</span></a>
+                    <a href="{% url 'reports' %}" class="quick-action-card"><i class="fa-solid fa-chart-pie"></i><span>Reports</span></a>
+                    <a href="{% url 'profile' %}" class="quick-action-card"><i class="fa-solid fa-user-gear"></i><span>Profile</span></a>
+                    {% if profile.role == 'teacher' %}<a href="{% url 'create_classroom' %}" class="quick-action-card"><i class="fa-solid fa-circle-plus"></i><span>Create</span></a>{% elif profile.role == 'student' %}<a href="{% url 'join_classroom' %}" class="quick-action-card"><i class="fa-solid fa-right-to-bracket"></i><span>Join</span></a>{% endif %}
+                </div>
+            </div>
+            <div class="content-panel">
+                <div class="panel-header"><div><h3>Recent announcements</h3><p>Latest updates from classroom spaces.</p></div></div>
+                <div class="announcement-stack">
+                    {% for item in announcements %}
+                    <div class="announcement-dashboard-card">
+                        <div class="announcement-badge-icon"><i class="fa-solid fa-bullhorn"></i></div>
+                        <div class="announcement-body"><h6>{{ item.title }}</h6><p>{{ item.message|truncatechars:120 }}</p></div>
+                    </div>
+                    {% empty %}<div class="empty-state-small">No announcements published yet.</div>{% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

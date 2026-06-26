@@ -1,0 +1,36 @@
+{% extends 'core/base.html' %}
+{% block title %}Profile | SmartClass{% endblock %}
+{% block page_title %}Profile settings{% endblock %}
+{% block page_subtitle %}Update your account information and keep your workspace details current.{% endblock %}
+{% block content %}
+<div class="row g-4">
+    <div class="col-lg-4">
+        <div class="surface-card h-100 text-center profile-side-card">
+            <div class="profile-avatar-large">{{ user.first_name|default:user.username|first|upper }}</div>
+            <h3 class="mb-1">{{ user.get_full_name|default:user.username }}</h3>
+            <p class="text-capitalize card-muted">{{ user.profile.role }}</p>
+            <div class="stack-space mt-4 text-start">
+                <div class="info-tile"><span>Username</span><strong>{{ user.username }}</strong></div>
+                <div class="info-tile"><span>Email</span><strong>{{ user.email|default:'Not added' }}</strong></div>
+                <div class="info-tile"><span>Phone</span><strong>{{ user.profile.phone|default:'Not added' }}</strong></div>
+                <div class="info-tile"><span>Bio</span><strong>{{ user.profile.bio|default:'No bio added'|truncatechars:40 }}</strong></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-8">
+        <div class="content-panel h-100">
+            <div class="panel-header"><div><h3>Update profile</h3><p>Edit your name, contact information, and short bio.</p></div></div>
+            <form method="post">
+                {% csrf_token %}
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6"><label class="form-label fw-semibold">First name</label><input type="text" name="first_name" value="{{ user.first_name }}" class="form-control" placeholder="Enter first name"></div>
+                    <div class="col-md-6"><label class="form-label fw-semibold">Last name</label><input type="text" name="last_name" value="{{ user.last_name }}" class="form-control" placeholder="Enter last name"></div>
+                    <div class="col-12"><label class="form-label fw-semibold">Email</label><input type="email" name="email" value="{{ user.email }}" class="form-control" placeholder="Enter email address"></div>
+                </div>
+                {% include 'core/partials/form_fields.html' with form=form %}
+                <button class="btn btn-gradient mt-2" type="submit">Save changes</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,107 @@
+{% extends 'core/base.html' %}
+{% block title %}Home | SmartClass{% endblock %}
+{% block page_title %}Smart classroom platform{% endblock %}
+{% block page_subtitle %}A modern Django classroom project with professional UI, responsive layouts, and complete academic workflows.{% endblock %}
+{% block content %}
+<section class="glass-card hero-card mb-4">
+    <div class="row g-4 align-items-center">
+        <div class="col-xl-7">
+            <div class="d-flex flex-wrap gap-2 mb-3">
+                <span class="badge-soft info"><i class="fa-solid fa-sparkles"></i> Django + SQLite</span>
+                <span class="badge-soft"><i class="fa-solid fa-mobile-screen"></i> Fully responsive</span>
+                <span class="badge-soft success"><i class="fa-solid fa-user-shield"></i> Role based</span>
+            </div>
+            <h2 class="hero-title">Build and manage a complete digital classroom with an interface that feels premium on every page.</h2>
+            <p class="hero-text">Teachers can create classrooms, upload handwritten notes, study materials, previous exam papers, and videos, then publish assignments, take attendance, post announcements, and run quizzes. Students can join with a class code, view learning content, watch videos, submit work, and track their progress in one elegant system.</p>
+            <div class="d-flex flex-wrap gap-3 mt-4">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'dashboard' %}" class="btn btn-gradient btn-lg">Open dashboard</a>
+                    <a href="{% url 'classroom_list' %}" class="btn btn-soft btn-lg">View classrooms</a>
+                {% else %}
+                    <a href="{% url 'register' %}" class="btn btn-gradient btn-lg">Create account</a>
+                    <a href="{% url 'login' %}" class="btn btn-soft btn-lg">Login now</a>
+                {% endif %}
+            </div>
+            <div class="mini-stat-grid mt-4">
+                <div class="mini-stat-card"><span>Teachers</span><strong>Create and manage classes</strong></div>
+                <div class="mini-stat-card"><span>Students</span><strong>Join with class code</strong></div>
+                <div class="mini-stat-card"><span>Admin</span><strong>Track activity and reports</strong></div>
+            </div>
+        </div>
+        <div class="col-xl-5">
+            <div class="glass-card h-100">
+                <div class="section-title-row mb-3">
+                    <div>
+                        <h3>Complete platform modules</h3>
+                        <p>Everything needed for a strong academic or portfolio project.</p>
+                    </div>
+                </div>
+                <div class="preview-list">
+                    <div class="preview-item"><div class="preview-item-icon"><i class="fa-solid fa-chalkboard"></i></div><div><strong>Classroom management</strong><div class="meta-text">Create subject spaces, share unique codes, and organize student access.</div></div></div>
+                    <div class="preview-item"><div class="preview-item-icon"><i class="fa-solid fa-file-circle-check"></i></div><div><strong>Assignments and grading</strong><div class="meta-text">Collect submissions, review uploads, and publish marks with feedback.</div></div></div>
+                    <div class="preview-item"><div class="preview-item-icon"><i class="fa-solid fa-user-check"></i></div><div><strong>Attendance tracking</strong><div class="meta-text">Save daily attendance and show progress using reports.</div></div></div>
+                    <div class="preview-item"><div class="preview-item-icon"><i class="fa-solid fa-chart-pie"></i></div><div><strong>Analytics dashboard</strong><div class="meta-text">Visualize quiz scores and attendance performance in one screen.</div></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="row g-4 mb-4">
+    <div class="col-lg-8">
+        <div class="glass-card h-100">
+            <div class="section-title-row mb-3">
+                <div>
+                    <h3>Designed for every role</h3>
+                    <p>Clean page layouts with consistent cards, buttons, tables, and forms.</p>
+                </div>
+            </div>
+            <div class="feature-grid">
+                <div class="feature-card"><div class="feature-icon"><i class="fa-solid fa-chalkboard-user"></i></div><div><h5>Teacher workspace</h5><p>Create classrooms, upload materials, post announcements, add assignments, and run quizzes.</p></div></div>
+                <div class="feature-card"><div class="feature-icon"><i class="fa-solid fa-user-graduate"></i></div><div><h5>Student workspace</h5><p>Join classes using class code, access content, submit files, and attempt quizzes with timer.</p></div></div>
+                <div class="feature-card"><div class="feature-icon"><i class="fa-solid fa-chart-line"></i></div><div><h5>Reports</h5><p>Track attendance and performance through visual, mobile-friendly analytics pages.</p></div></div>
+                <div class="feature-card"><div class="feature-icon"><i class="fa-solid fa-object-group"></i></div><div><h5>Professional UI</h5><p>Responsive HTML, CSS, Bootstrap, and JavaScript styling across all screens.</p></div></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="glass-card h-100">
+            <div class="section-title-row mb-3">
+                <div>
+                    <h3>Latest classrooms</h3>
+                    <p>Recently created class spaces.</p>
+                </div>
+            </div>
+            <div class="stack-list">
+                {% for class in featured_classes %}
+                    <div class="list-card-sm">
+                        <div>
+                            <div class="fw-semibold">{{ class.title }}</div>
+                            <div class="small text-secondary-emphasis">{{ class.subject }}</div>
+                        </div>
+                        <span class="code-badge">{{ class.class_code }}</span>
+                    </div>
+                {% empty %}
+                    <div class="empty-card">No classrooms yet. Register and create the first one.</div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="home-cta glass-card">
+    <div class="row g-4 align-items-center">
+        <div class="col-lg-8">
+            <h3 class="mb-2">Use this as your final year project or product starter.</h3>
+            <p class="mb-0 text-secondary-emphasis">The project already includes authentication, responsive pages, role-based flows, and all major classroom modules with SQLite database support.</p>
+        </div>
+        <div class="col-lg-4 text-lg-end">
+            {% if user.is_authenticated %}
+                <a href="{% url 'dashboard' %}" class="btn btn-gradient">Continue to workspace</a>
+            {% else %}
+                <a href="{% url 'register' %}" class="btn btn-gradient">Start with SmartClass</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

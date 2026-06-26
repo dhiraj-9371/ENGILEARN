@@ -1,0 +1,58 @@
+{% extends 'core/base.html' %}
+{% block title %}{{ material.title }} | SmartClass{% endblock %}
+{% block page_title %}{{ material.title }}{% endblock %}
+{% block page_subtitle %}Open classroom content in a student-friendly viewer page with category details and video tracking.{% endblock %}
+{% block content %}
+<div class="row g-4">
+    <div class="col-lg-8">
+        <div class="surface-card material-view-shell p-4">
+            <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
+                <span class="badge-soft info">{{ material.classroom.title }}</span>
+                <span class="badge-soft neutral">{{ material.get_material_type_display }}</span>
+                {% if material.is_video and watch_status and watch_status.viewed %}<span class="badge-soft success">Viewed</span>{% endif %}
+            </div>
+            <h3 class="mb-2">{{ material.title }}</h3>
+            <p class="card-muted mb-4">{{ material.description|default:'No description added for this material.' }}</p>
+            {% if material.is_video %}
+                {% if material.file %}
+                <video controls class="smart-video-player" id="lessonVideo" data-status-url="{% url 'update_video_status' material.id %}">
+                    <source src="{{ material.file.url }}">
+                    Your browser does not support the video tag.
+                </video>
+                {% elif material.external_link %}
+                <div class="ratio ratio-16x9 mb-3 iframe-shell"><iframe src="{{ material.external_link }}" title="Classroom video" allowfullscreen class="video-frame"></iframe></div>
+                {% if is_student %}
+                <form method="post" action="{% url 'update_video_status' material.id %}" id="manualWatchForm">
+                    {% csrf_token %}
+                    <input type="hidden" name="completed" value="true">
+                    <input type="hidden" name="progress_seconds" value="60">
+                    <button type="submit" class="btn btn-gradient">Mark as watched</button>
+                </form>
+                {% endif %}
+                {% endif %}
+            {% else %}
+            <div class="preview-panel"><div class="preview-icon"><i class="fa-solid fa-file-lines"></i></div><div><h5 class="mb-1">Open attached file</h5><p class="card-muted mb-0">Use the button below to view or download the uploaded material.</p></div></div>
+            {% endif %}
+            <div class="d-flex gap-3 flex-wrap mt-4">
+                {% if material.file %}<a href="{{ material.file.url }}" target="_blank" class="btn btn-gradient">Open file</a>{% endif %}
+                {% if material.external_link and not material.is_video %}<a href="{{ material.external_link }}" target="_blank" class="btn btn-soft">Open external link</a>{% endif %}
+                <a href="{% url 'classroom_detail' material.classroom.id %}" class="btn btn-soft">Back to classroom</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="content-panel h-100">
+            <div class="panel-header"><div><h3>Material details</h3><p>Quick summary and learner tracking details.</p></div></div>
+            <div class="stack-space">
+                <div class="info-tile"><span>Classroom</span><strong>{{ material.classroom.title }}</strong></div>
+                <div class="info-tile"><span>Category</span><strong>{{ material.get_material_type_display }}</strong></div>
+                <div class="info-tile"><span>Uploaded</span><strong>{{ material.uploaded_at|date:"d M Y" }}</strong></div>
+                {% if material.is_video and watch_status %}
+                <div class="info-tile"><span>Status</span><strong>{% if watch_status.viewed %}Viewed{% else %}Pending{% endif %}</strong></div>
+                <div class="info-tile"><span>Progress</span><strong>{{ watch_status.progress_seconds }} sec</strong></div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

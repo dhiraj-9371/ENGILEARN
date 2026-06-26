@@ -1,0 +1,695 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Index - eNno Bootstrap Template</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+
+ 
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+
+
+<link href="{% static 'assets/img/favicon.png' %}" rel="icon">
+<link href="{% static 'assets/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+<link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+<link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+<link href="{% static 'assets/vendor/aos/aos.css' %}" rel="stylesheet">
+<link href="{% static 'assets/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+<link href="{% static 'assets/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+
+<link href="{% static 'assets/css/main.css' %}" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: eNno
+  * Template URL: https://bootstrapmade.com/enno-free-simple-bootstrap-template/
+  * Updated: Aug 07 2024 with Bootstrap v5.3.3
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body class="index-page">
+
+ 
+
+<header id="header" class="header d-flex align-items-center sticky-top shadow-sm bg-white">
+  <div class="container-fluid container-xl position-relative d-flex align-items-center">
+
+    <a href="/" class="logo d-flex align-items-center me-auto text-decoration-none">
+      <i class="bi bi-mortarboard-fill me-2 text-primary fs-3"></i>
+      <h1 class="sitename m-0 fw-bold text-dark">ENGI-LEARN</h1>
+    </a>
+
+    <nav id="navmenu" class="navmenu">
+      <ul>
+        <li><a href="#hero" class="active">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#modules">Modules</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#reports">Reports</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+    </nav>
+
+    {% if user.is_authenticated %}
+      <a class="btn btn-primary px-4 rounded-pill" href="{% url 'dashboard' %}">Dashboard</a>
+    {% else %}
+      <a class="btn btn-primary px-4 rounded-pill" href="{% url 'login' %}">Get Started</a>
+    {% endif %}
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- Hero Section -->
+  <section id="hero" class="hero section py-5" style="background: linear-gradient(135deg, #f5f9ff 0%, #eef4ff 100%);">
+    <div class="container">
+      <div class="row gy-4 align-items-center">
+        <div class="col-lg-6 order-2 order-lg-1 d-flex flex-column justify-content-center">
+          <span class="badge rounded-pill bg-primary-subtle text-primary mb-3 px-3 py-2">
+            Smart classroom management system
+          </span>
+          <h1 class="display-5 fw-bold mb-3">
+            Manage your digital classroom with a clean and professional platform
+          </h1>
+          <p class="lead text-muted mb-4">
+            SmartClass helps teachers and students manage classrooms, handwritten notes,
+            study materials, previous exam papers, videos, attendance, assignments,
+            quizzes, announcements, and learning progress in one place.
+          </p>
+
+          <div class="d-flex flex-wrap gap-3">
+            {% if user.is_authenticated %}
+              <a href="{% url 'dashboard' %}" class="btn btn-primary btn-lg rounded-pill px-4">Go to Dashboard</a>
+            {% else %}
+              <a href="{% url 'register' %}" class="btn btn-primary btn-lg rounded-pill px-4">Create Account</a>
+              <a href="{% url 'login' %}" class="btn btn-outline-primary btn-lg rounded-pill px-4">Login</a>
+            {% endif %}
+          </div>
+
+          {% comment %} <div class="d-flex flex-wrap gap-4 mt-4 small text-muted">
+            <span><i class="bi bi-check-circle-fill text-success me-1"></i> Django + SQLite</span>
+            <span><i class="bi bi-check-circle-fill text-success me-1"></i> Responsive UI</span>
+            <span><i class="bi bi-check-circle-fill text-success me-1"></i> Teacher / Student Roles</span>
+          </div> {% endcomment %}
+        </div>
+
+        <div class="col-lg-6 order-1 order-lg-2 text-center">
+          <img src="{% static 'assets/img/hero-img.png' %}" class="img-fluid" alt="SmartClass Hero">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Services -->
+  <section id="modules" class="featured-services section py-5">
+    <div class="container">
+      <div class="text-center mb-5">
+        <h2 class="fw-bold">Core Modules</h2>
+        <p class="text-muted">All classroom activities in one user-friendly system</p>
+      </div>
+
+      <div class="row gy-4">
+        <div class="col-lg-4 d-flex">
+          <div class="service-item position-relative shadow-sm border-0 rounded-4 p-4 bg-white w-100">
+            <div class="icon mb-3"><i class="bi bi-journal-richtext fs-1 text-primary"></i></div>
+            <h4>Study Materials</h4>
+            <p class="text-muted">
+              Upload handwritten notes, study material PDFs, previous exam question papers,
+              and important reference files for students.
+            </p>
+          </div>
+        </div>
+
+        <div class="col-lg-4 d-flex">
+          <div class="service-item position-relative shadow-sm border-0 rounded-4 p-4 bg-white w-100">
+            <div class="icon mb-3"><i class="bi bi-play-btn-fill fs-1 text-primary"></i></div>
+            <h4>Video Learning</h4>
+            <p class="text-muted">
+              Upload class videos and track whether students watched them or not.
+              Teachers can monitor learning engagement directly.
+            </p>
+          </div>
+        </div>
+
+        <div class="col-lg-4 d-flex">
+          <div class="service-item position-relative shadow-sm border-0 rounded-4 p-4 bg-white w-100">
+            <div class="icon mb-3"><i class="bi bi-clipboard-data fs-1 text-primary"></i></div>
+            <h4>Assignments & Attendance</h4>
+            <p class="text-muted">
+              Manage submissions, grading, daily attendance, quiz activity,
+              and classroom progress from one dashboard.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section id="about" class="about section py-5 bg-light">
+    <div class="container section-title text-center mb-5">
+      <span class="text-uppercase text-primary fw-semibold">About Platform</span>
+      <br>
+      <p class="text-muted">
+        A modern classroom-type platform designed for schools, colleges, and training institutes.
+      </p>
+    </div>
+
+    <div class="container">
+      <div class="row gy-4 align-items-center">
+        <div class="col-lg-6">
+          <img src="{% static 'assets/img/about.png' %}" class="img-fluid rounded-4 shadow-sm" alt="About SmartClass">
+        </div>
+
+        <div class="col-lg-6 content">
+          <h3 class="fw-bold mb-3">A complete academic management solution for teachers and students</h3>
+          <p class="text-muted">
+            ENGI-LEARN makes classroom activities simple, digital, and organized. Teachers can create classes,
+            upload educational content, post announcements, track attendance, conduct quizzes,
+            and monitor student activity.
+          </p>
+          <ul class="list-unstyled mt-4">
+            <li class="mb-3"><i class="bi bi-check2-circle text-primary me-2"></i> Handwritten notes and study material upload</li>
+            <li class="mb-3"><i class="bi bi-check2-circle text-primary me-2"></i> Previous exam paper sharing for revision support</li>
+            <li class="mb-3"><i class="bi bi-check2-circle text-primary me-2"></i> Video view tracking and teacher-side status monitoring</li>
+            <li class="mb-3"><i class="bi bi-check2-circle text-primary me-2"></i> Student-friendly interface with mobile responsive design</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section id="reports" class="stats section py-5">
+    <div class="container">
+      <div class="row gy-4 text-center">
+        <div class="col-lg-3 col-md-6">
+          <div class="stats-item shadow-sm rounded-4 p-4 bg-white h-100">
+            <i class="bi bi-people-fill fs-2 text-primary mb-2"></i>
+            <h3 class="fw-bold">3</h3>
+            <p class="text-muted mb-0">User Roles</p>
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+          <div class="stats-item shadow-sm rounded-4 p-4 bg-white h-100">
+            <i class="bi bi-collection-play-fill fs-2 text-primary mb-2"></i>
+            <h3 class="fw-bold">4</h3>
+            <p class="text-muted mb-0">Material Types</p>
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+          <div class="stats-item shadow-sm rounded-4 p-4 bg-white h-100">
+            <i class="bi bi-camera-video-fill fs-2 text-primary mb-2"></i>
+            <h3 class="fw-bold">100%</h3>
+            <p class="text-muted mb-0">Trackable Video Views</p>
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+          <div class="stats-item shadow-sm rounded-4 p-4 bg-white h-100">
+            <i class="bi bi-bar-chart-fill fs-2 text-primary mb-2"></i>
+            <h3 class="fw-bold">24/7</h3>
+            <p class="text-muted mb-0">Learning Access</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features" class="section py-5 bg-light">
+    <div class="container">
+      <div class="text-center mb-5">
+        <h2 class="fw-bold">Platform Features</h2>
+        <p class="text-muted">Designed for better teaching, learning, and academic monitoring</p>
+      </div>
+
+      <div class="row gy-4">
+        <div class="col-md-6 col-lg-4">
+          <div class="p-4 bg-white rounded-4 shadow-sm h-100">
+            <i class="bi bi-pencil-square fs-2 text-primary mb-3 d-inline-block"></i>
+            <h5 class="fw-bold">Handwritten Notes</h5>
+            <p class="text-muted mb-0">Teachers can upload handwritten notes for better subject explanation.</p>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <div class="p-4 bg-white rounded-4 shadow-sm h-100">
+            <i class="bi bi-file-earmark-text-fill fs-2 text-primary mb-3 d-inline-block"></i>
+            <h5 class="fw-bold">Previous Exam Papers</h5>
+            <p class="text-muted mb-0">Students can view and download previous year papers for preparation.</p>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <div class="p-4 bg-white rounded-4 shadow-sm h-100">
+            <i class="bi bi-play-circle-fill fs-2 text-primary mb-3 d-inline-block"></i>
+            <h5 class="fw-bold">Video Watch Tracking</h5>
+            <p class="text-muted mb-0">Track which students viewed uploaded videos and update status for teachers.</p>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <div class="p-4 bg-white rounded-4 shadow-sm h-100">
+            <i class="bi bi-calendar-check-fill fs-2 text-primary mb-3 d-inline-block"></i>
+            <h5 class="fw-bold">Attendance</h5>
+            <p class="text-muted mb-0">Teachers can mark daily attendance and review student records anytime.</p>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <div class="p-4 bg-white rounded-4 shadow-sm h-100">
+            <i class="bi bi-journal-check fs-2 text-primary mb-3 d-inline-block"></i>
+            <h5 class="fw-bold">Assignments & Quizzes</h5>
+            <p class="text-muted mb-0">Manage assignments, online quizzes, submissions, and marks efficiently.</p>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <div class="p-4 bg-white rounded-4 shadow-sm h-100">
+            <i class="bi bi-phone-fill fs-2 text-primary mb-3 d-inline-block"></i>
+            <h5 class="fw-bold">Responsive Design</h5>
+            <p class="text-muted mb-0">Fully user-friendly interface for desktop, tablet, and mobile devices.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
+
+
+
+<!-- Services Section -->
+<section id="services" class="services section light-background">
+
+  <div class="container section-title" data-aos="fade-up">
+    <span>Services</span>
+    <h2>Platform Services</h2>
+    <p>ENGI-LEARN provides complete digital classroom features for teachers, students, and institutes.</p>
+  </div>
+
+  <div class="container">
+    <div class="row gy-4">
+
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+        <div class="service-item position-relative">
+          <div class="icon">
+            <i class="bi bi-journal-richtext"></i>
+          </div>
+          <a href="#" class="stretched-link">
+            <h3>Study Materials</h3>
+          </a>
+          <p>Teachers can upload handwritten notes, study materials, PDFs, and class reference documents for students.</p>
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+        <div class="service-item position-relative">
+          <div class="icon">
+            <i class="bi bi-file-earmark-text"></i>
+          </div>
+          <a href="#" class="stretched-link">
+            <h3>Previous Exam Papers</h3>
+          </a>
+          <p>Students can access previous year question papers and important practice sets directly from the classroom.</p>
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+        <div class="service-item position-relative">
+          <div class="icon">
+            <i class="bi bi-play-circle"></i>
+          </div>
+          <a href="#" class="stretched-link">
+            <h3>Video Learning</h3>
+          </a>
+          <p>Teachers can upload video lectures and students can watch them online with view tracking support.</p>
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="400">
+        <div class="service-item position-relative">
+          <div class="icon">
+            <i class="bi bi-clipboard-check"></i>
+          </div>
+          <a href="#" class="stretched-link">
+            <h3>Assignments & Submission</h3>
+          </a>
+          <p>Create assignments, collect student submissions, review answers, and publish marks with feedback.</p>
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="500">
+        <div class="service-item position-relative">
+          <div class="icon">
+            <i class="bi bi-calendar-check"></i>
+          </div>
+          <a href="#" class="stretched-link">
+            <h3>Attendance Tracking</h3>
+          </a>
+          <p>Teachers can mark attendance daily and monitor student presence records with an organized dashboard.</p>
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="600">
+        <div class="service-item position-relative">
+          <div class="icon">
+            <i class="bi bi-bar-chart-line"></i>
+          </div>
+          <a href="#" class="stretched-link">
+            <h3>Reports & Analytics</h3>
+          </a>
+          <p>Track academic activity, video watched status, assignment progress, attendance summary, and classroom reports.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+<!-- /Services Section -->
+
+
+<!-- Call To Action Section -->
+<section id="call-to-action" class="call-to-action section accent-background">
+  <div class="container">
+    <div class="row justify-content-center" data-aos="zoom-in" data-aos-delay="100">
+      <div class="col-xl-10">
+        <div class="text-center">
+          <h3>Start Your Digital Classroom Today</h3>
+          <p>
+            ENGI-LEARN helps institutes manage classes, study materials, handwritten notes,
+            previous exam papers, videos, quizzes, assignments, and attendance in one simple platform.
+          </p>
+          {% if user.is_authenticated %}
+            <a class="cta-btn" href="{% url 'dashboard' %}">Open Dashboard</a>
+          {% else %}
+            <a class="cta-btn" href="{% url 'register' %}">Create Account</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /Call To Action Section -->
+
+
+<!-- Team Section -->
+<section id="team" class="team section">
+
+  <div class="container section-title" data-aos="fade-up">
+    <span>User Roles</span>
+    <h2>Platform Users</h2>
+    <p>ENGI-LEARN is designed for three main users who manage the complete classroom workflow.</p>
+  </div>
+
+  <div class="container">
+    <div class="row gy-5">
+
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+        <div class="member">
+          <div class="pic">
+            <img src="{% static 'assets/img/team/team-1.jpg' %}" class="img-fluid" alt="Admin">
+          </div>
+          <div class="member-info">
+            <h4>Admin</h4>
+            <span>System Management</span>
+            <div class="social">
+              <a href="#"><i class="bi bi-speedometer2"></i></a>
+              <a href="#"><i class="bi bi-gear"></i></a>
+              <a href="#"><i class="bi bi-people"></i></a>
+              <a href="#"><i class="bi bi-bar-chart"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+        <div class="member">
+          <div class="pic">
+            <img src="{% static 'assets/img/team/team-2.jpg' %}" class="img-fluid" alt="Teacher">
+          </div>
+          <div class="member-info">
+            <h4>Teacher</h4>
+            <span>Classroom Owner</span>
+            <div class="social">
+              <a href="#"><i class="bi bi-journal-bookmark"></i></a>
+              <a href="#"><i class="bi bi-camera-video"></i></a>
+              <a href="#"><i class="bi bi-clipboard-check"></i></a>
+              <a href="#"><i class="bi bi-person-check"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+        <div class="member">
+          <div class="pic">
+            <img src="{% static 'assets/img/team/team-3.jpg' %}" class="img-fluid" alt="Student">
+          </div>
+          <div class="member-info">
+            <h4>Student</h4>
+            <span>Learning User</span>
+            <div class="social">
+              <a href="#"><i class="bi bi-book"></i></a>
+              <a href="#"><i class="bi bi-file-earmark-text"></i></a>
+              <a href="#"><i class="bi bi-play-circle"></i></a>
+              <a href="#"><i class="bi bi-graph-up"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+<!-- /Team Section -->
+
+
+<!-- Contact Section -->
+<section id="contact" class="contact section">
+
+  <div class="container section-title" data-aos="fade-up">
+    <span>Contact</span>
+    <h2>Get In Touch</h2>
+    <p>Contact ENGI-LEARN support for classroom setup, technical help, or platform details.</p>
+  </div>
+
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <div class="row gy-4">
+
+      <div class="col-lg-5">
+        <div class="info-wrap">
+
+          <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="200">
+            <i class="bi bi-geo-alt flex-shrink-0"></i>
+            <div>
+              <h3> ABMSP's Anantrao Pawar College of Engineering & Research</h3>
+              <p>Pune, Maharashtra, India</p>
+            </div>
+          </div>
+
+          <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="300">
+            <i class="bi bi-telephone flex-shrink-0"></i>
+            <div>
+              <h3>Call Us</h3>
+              <p>+91 9975671158</p>
+            </div>
+          </div>
+
+          <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="400">
+            <i class="bi bi-envelope flex-shrink-0"></i>
+            <div>
+              <h3>Email Us</h3>
+              <p>support@engileran.com</p>
+            </div>
+          </div>
+
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3783.0951614100474!2d73.79970987512658!3d18.524564682568264!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2bf5f0a000001%3A0x1234567890abcdef!2sPune%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1710000000000!5m2!1sen!2sin"
+            frameborder="0"
+            style="border:0; width: 100%; height: 270px;"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+        </div>
+      </div>
+
+      <div class="col-lg-7">
+        <form method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="200">
+          {% csrf_token %}
+          <div class="row gy-4">
+
+            <div class="col-md-6">
+              <label for="name-field" class="pb-2">Your Name</label>
+              <input type="text" name="name" id="name-field" class="form-control" required>
+            </div>
+
+            <div class="col-md-6">
+              <label for="email-field" class="pb-2">Your Email</label>
+              <input type="email" class="form-control" name="email" id="email-field" required>
+            </div>
+
+            <div class="col-md-12">
+              <label for="subject-field" class="pb-2">Subject</label>
+              <input type="text" class="form-control" name="subject" id="subject-field" required>
+            </div>
+
+            <div class="col-md-12">
+              <label for="message-field" class="pb-2">Message</label>
+              <textarea class="form-control" name="message" rows="10" id="message-field" required></textarea>
+            </div>
+
+            <div class="col-md-12 text-center">
+              <button type="submit" class="btn btn-primary px-4 py-2 rounded-pill">Send Message</button>
+            </div>
+
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</section>
+<!-- /Contact Section -->
+
+  </main>
+
+ <footer id="footer" class="footer">
+
+  <!-- Newsletter Section -->
+  <div class="footer-newsletter">
+    <div class="container">
+      <div class="row justify-content-center text-center">
+        <div class="col-lg-7">
+          <h4>Join ENGI-LEARN Updates</h4>
+          <p>
+            Subscribe to get the latest updates about classroom features, study materials,
+            assignments, quizzes, and learning tools.
+          </p>
+          <form method="post" class="php-email-form">
+            {% csrf_token %}
+            <div class="newsletter-form">
+              <input type="email" name="email" placeholder="Enter your email" required>
+              <input type="submit" value="Subscribe">
+            </div>
+            <div class="loading">Loading</div>
+            <div class="error-message"></div>
+            <div class="sent-message">Your subscription request has been sent successfully.</div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer Top -->
+  <div class="container footer-top">
+    <div class="row gy-4">
+
+      <!-- About -->
+      <div class="col-lg-4 col-md-6 footer-about">
+        <a href="/" class="d-flex align-items-center text-decoration-none">
+          <span class="sitename">ENGI-LEARN</span>
+        </a>
+        <div class="footer-contact pt-3">
+          <p>Pune, Maharashtra</p>
+          <p>India</p>
+          <p class="mt-3"><strong>Phone:</strong> <span>+91 98765 43210</span></p>
+          <p><strong>Email:</strong> <span>support@smartclass.com</span></p>
+        </div>
+      </div>
+
+      <!-- Useful Links -->
+      <div class="col-lg-2 col-md-3 footer-links">
+        <h4>Useful Links</h4>
+        <ul>
+          <li><i class="bi bi-chevron-right"></i> <a href="#hero">Home</a></li>
+          <li><i class="bi bi-chevron-right"></i> <a href="#about">About</a></li>
+          <li><i class="bi bi-chevron-right"></i> <a href="#services">Services</a></li>
+          <li><i class="bi bi-chevron-right"></i> <a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+
+      <!-- Platform Features -->
+      <div class="col-lg-2 col-md-3 footer-links">
+        <h4>Platform Features</h4>
+        <ul>
+          <li><i class="bi bi-chevron-right"></i> <a href="#">Study Materials</a></li>
+          <li><i class="bi bi-chevron-right"></i> <a href="#">Assignments</a></li>
+          <li><i class="bi bi-chevron-right"></i> <a href="#">Attendance</a></li>
+          <li><i class="bi bi-chevron-right"></i> <a href="#">Video Tracking</a></li>
+        </ul>
+      </div>
+
+      <!-- Follow Us -->
+      <div class="col-lg-4 col-md-12">
+        <h4>About ENGI-LEARN</h4>
+        <p>
+          ENGI-LEARN is a digital classroom platform where teachers and students can manage
+          notes, study materials, previous exam papers, videos, quizzes, assignments,
+          attendance, and academic progress in one place.
+        </p>
+        <div class="social-links d-flex">
+          <a href="#"><i class="bi bi-twitter-x"></i></a>
+          <a href="#"><i class="bi bi-facebook"></i></a>
+          <a href="#"><i class="bi bi-instagram"></i></a>
+          <a href="#"><i class="bi bi-linkedin"></i></a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Copyright -->
+  <div class="container copyright text-center mt-4">
+    <p>
+      © <span>Copyright</span>
+      <strong class="px-1 sitename">ENGI-LEARN</strong>
+      <span>All Rights Reserved</span>
+    </p>
+    <div class="credits">
+      Designed for SmartClass Digital Classroom Platform
+    </div>
+  </div>
+
+</footer>
+
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Preloader -->
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+<script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'assets/vendor/php-email-form/validate.js' %}"></script>
+<script src="{% static 'assets/vendor/aos/aos.js' %}"></script>
+<script src="{% static 'assets/vendor/glightbox/js/glightbox.min.js' %}"></script>
+<script src="{% static 'assets/vendor/purecounter/purecounter_vanilla.js' %}"></script>
+<script src="{% static 'assets/vendor/imagesloaded/imagesloaded.pkgd.min.js' %}"></script>
+<script src="{% static 'assets/vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
+<script src="{% static 'assets/vendor/swiper/swiper-bundle.min.js' %}"></script>
+
+<!-- Main JS File -->
+<script src="{% static 'assets/js/main.js' %}"></script>
+
+</body>
+
+</html>

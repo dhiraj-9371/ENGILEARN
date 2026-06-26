@@ -1,0 +1,341 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Register | ENGI-LEARN</title>
+  <meta name="description" content="Create your SmartClass account">
+  <meta name="keywords" content="smartclass, register, classroom, education">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Raleway:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS -->
+  <link href="{% static 'assets/img/favicon.png' %}" rel="icon">
+  <link href="{% static 'assets/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+  <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/css/main.css' %}" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(135deg, #eef4ff 0%, #f8fbff 45%, #ffffff 100%);
+      color: #1f2937;
+      min-height: 100vh;
+    }
+
+    .register-page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .topbar {
+      background: #ffffff;
+      border-bottom: 1px solid #e9eef6;
+      padding: 14px 0;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .brand-logo {
+      font-size: 30px;
+      color: #0d6efd;
+    }
+
+    .brand-name {
+      font-size: 28px;
+      font-weight: 700;
+      color: #1f2d3d;
+      margin: 0;
+    }
+
+    .auth-wrapper {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      padding: 50px 0;
+    }
+
+    .auth-left {
+      background: linear-gradient(160deg, #a8c7f5 0%, #6ea8fe 100%);
+      color: white;
+      border-radius: 28px;
+      padding: 40px;
+      height: 100%;
+      box-shadow: 0 20px 50px rgba(13, 110, 253, 0.20);
+    }
+
+    .auth-left .badge-soft {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.18);
+      color: #fff;
+      border-radius: 999px;
+      padding: 8px 16px;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .auth-left h2 {
+      font-size: 34px;
+      font-weight: 800;
+      margin: 20px 0 14px;
+      line-height: 1.25;
+    }
+
+    .auth-left p {
+      color: rgba(255,255,255,0.92);
+      font-size: 15px;
+      line-height: 1.8;
+      margin-bottom: 0;
+    }
+
+    .feature-list {
+      margin-top: 28px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .feature-item {
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 18px;
+      padding: 16px 18px;
+    }
+
+    .feature-item h6 {
+      margin: 0 0 6px;
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    .feature-item p {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .auth-card {
+      background: rgba(255,255,255,0.94);
+      border: 1px solid #e8eef8;
+      border-radius: 28px;
+      padding: 36px;
+      box-shadow: 0 20px 60px rgba(31, 45, 61, 0.08);
+      backdrop-filter: blur(8px);
+      height: 100%;
+    }
+
+    .auth-card h3 {
+      font-size: 30px;
+      font-weight: 800;
+      color: #1f2d3d;
+      margin-bottom: 8px;
+    }
+
+    .auth-card p {
+      color: #6b7280;
+      margin-bottom: 24px;
+    }
+
+    .form-label {
+      font-weight: 600;
+      color: #334155;
+      margin-bottom: 8px;
+    }
+
+    .form-control,
+    .form-select {
+      min-height: 50px;
+      border-radius: 14px;
+      border: 1px solid #d8e2f0;
+      padding: 12px 14px;
+      box-shadow: none;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+      border-color: #86b7fe;
+      box-shadow: 0 0 0 0.2rem rgba(13,110,253,.10);
+    }
+
+    .btn-register {
+      background: linear-gradient(90deg, #0d6efd, #4f8dfd);
+      color: white;
+      border: 0;
+      min-height: 52px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 700;
+      transition: 0.3s ease;
+    }
+
+    .btn-register:hover {
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(13, 110, 253, 0.22);
+    }
+
+    .auth-footer {
+      text-align: center;
+      margin-top: 22px;
+      color: #6b7280;
+      font-size: 14px;
+    }
+
+    .auth-footer a {
+      color: #0d6efd;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .page-footer {
+      background: #ffffff;
+      border-top: 1px solid #e9eef6;
+      padding: 18px 0;
+      text-align: center;
+      color: #64748b;
+      font-size: 14px;
+    }
+
+    @media (max-width: 991px) {
+      .auth-wrapper {
+        padding: 30px 0;
+      }
+
+      .auth-left,
+      .auth-card {
+        border-radius: 22px;
+      }
+
+      .auth-left h2 {
+        font-size: 28px;
+      }
+
+      .auth-card h3 {
+        font-size: 26px;
+      }
+    }
+
+    @media (max-width: 575px) {
+      .auth-left,
+      .auth-card {
+        padding: 24px 20px;
+      }
+
+      .brand-name {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="register-page">
+
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="container">
+        <div class="d-flex justify-content-between align-items-center">
+          <a href="/" class="d-flex align-items-center text-decoration-none">
+            <i class="bi bi-mortarboard-fill brand-logo me-2"></i>
+            <h1 class="brand-name">ENGI-LEARN</h1>
+          </a>
+          <a href="{% url 'login' %}" class="btn btn-outline-primary rounded-pill px-4">Login</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Register Section -->
+    <section class="auth-wrapper">
+      <div class="container">
+        <div class="row g-4 align-items-stretch">
+
+          <div class="col-lg-5">
+            <div class="auth-left">
+              <span class="badge-soft">
+                <i class="bi bi-stars"></i> Smart learning platform
+              </span>
+
+              <h2>Create your digital classroom account with a modern learning experience</h2>
+
+              <p>
+                ENGI-LEARN helps teachers and students manage handwritten notes, study materials,
+                previous exam papers, assignments, attendance, quizzes, and video learning in one place.
+              </p>
+
+              <div class="feature-list">
+                <div class="feature-item">
+                  <h6><i class="bi bi-journal-text me-2"></i>Study Material Access</h6>
+                  <p>Organize handwritten notes, documents, and previous exam question papers neatly.</p>
+                </div>
+
+                <div class="feature-item">
+                  <h6><i class="bi bi-camera-video me-2"></i>Video Learning Tracking</h6>
+                  <p>Teachers can upload videos and monitor whether students watched the content.</p>
+                </div>
+
+                <div class="feature-item">
+                  <h6><i class="bi bi-bar-chart-line me-2"></i>Simple Academic Monitoring</h6>
+                  <p>Track attendance, submissions, quiz progress, and classroom activity professionally.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-7">
+            <div class="auth-card">
+              <h3>Create your SmartClass account</h3>
+              <p>Fill in your details below to register and start using the classroom platform.</p>
+
+              <form method="post" novalidate>
+                {% csrf_token %}
+
+                {% for field in form %}
+                  <div class="mb-3">
+                    <label for="{{ field.id_for_label }}" class="form-label">
+                      {{ field.label }}
+                    </label>
+                    {{ field }}
+                    {% if field.errors %}
+                      <div class="text-danger small mt-1">
+                        {{ field.errors|striptags }}
+                      </div>
+                    {% endif %}
+                  </div>
+                {% endfor %}
+
+                <button type="submit" class="btn btn-register w-100 mt-2">
+                  Create Account
+                </button>
+              </form>
+
+              <div class="auth-footer">
+                Already have an account?
+                <a href="{% url 'login' %}">Sign in here</a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="page-footer">
+      <div class="container">
+        © ENGI-LEARN — Digital Classroom Platform
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>

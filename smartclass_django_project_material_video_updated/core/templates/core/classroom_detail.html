@@ -1,0 +1,193 @@
+{% extends 'core/base.html' %}
+{% block title %}{{ classroom.title }} | SmartClass{% endblock %}
+{% block page_title %}{{ classroom.title }}{% endblock %}
+{% block page_subtitle %}Classroom workspace with notes, study material, previous papers, videos, assignments, announcements, quizzes, and tracking tools.{% endblock %}
+{% block content %}
+<div class="classroom-hero mb-4">
+    <div class="row g-4 align-items-center">
+        <div class="col-xl-8">
+            <div class="surface-card h-100 classroom-hero-main">
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                    <span class="badge-soft info">{{ classroom.subject }}</span>
+                    <span class="class-code-badge">Code: {{ classroom.class_code }}</span>
+                    <button type="button" class="btn btn-soft btn-sm" data-copy-text="{{ classroom.class_code }}"><i class="fa-regular fa-copy"></i> Copy code</button>
+                </div>
+                <h2 class="mb-2">{{ classroom.title }}</h2>
+                <p class="card-muted mb-4">{{ classroom.description|default:'No classroom description added yet.' }}</p>
+                <div class="classroom-meta-grid">
+                    <div class="mini-status-box"><span>Teacher</span><strong>{{ classroom.teacher.get_full_name|default:classroom.teacher.username }}</strong></div>
+                    <div class="mini-status-box"><span>Students</span><strong>{{ students|length }}</strong></div>
+                    <div class="mini-status-box"><span>Created</span><strong>{{ classroom.created_at|date:"d M Y" }}</strong></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-4">
+            <div class="surface-card h-100">
+                {% if is_teacher %}
+                <div class="quick-action-grid single-column">
+                    <a class="quick-action-card" href="{% url 'add_material' classroom.id %}"><i class="fa-solid fa-folder-plus"></i><span>Upload notes / videos</span></a>
+                    <a class="quick-action-card" href="{% url 'add_assignment' classroom.id %}"><i class="fa-solid fa-file-circle-plus"></i><span>Create assignment</span></a>
+                    <a class="quick-action-card" href="{% url 'add_announcement' classroom.id %}"><i class="fa-solid fa-bullhorn"></i><span>Post announcement</span></a>
+                    <div class="d-flex gap-2 flex-wrap"><a href="{% url 'mark_attendance' classroom.id %}" class="btn btn-soft btn-sm flex-fill">Attendance</a><a href="{% url 'create_quiz' classroom.id %}" class="btn btn-gradient btn-sm flex-fill">Quiz</a></div>
+                </div>
+                {% else %}
+                <div class="student-zone-card">
+                    <h5>Student learning zone</h5>
+                    <p>Open notes, watch videos, solve previous papers, submit assignments, and attempt quizzes from one page.</p>
+                    <span class="badge-soft success"><i class="fa-solid fa-circle-check"></i> Joined classroom</span>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-xl-4">
+        <div class="content-panel h-100">
+            <div class="panel-header"><div><h3>Study materials</h3><p>Organized classroom content with category labels and quick open actions.</p></div></div>
+            <div class="stack-space">
+                {% for item in materials %}
+                <div class="list-surface-item">
+                    <div>
+                        <div class="d-flex flex-wrap gap-2 align-items-center mb-1"><div class="fw-semibold">{{ item.title }}</div><span class="badge-soft neutral">{{ item.get_material_type_display }}</span>{% if item.is_video %}<span class="badge-soft info">Video</span>{% endif %}</div>
+                        <div class="small card-muted mb-2">{{ item.description|default:'No description added.'|truncatechars:96 }}</div>
+                        <div class="classroom-meta"><span><i class="fa-regular fa-clock"></i> {{ item.uploaded_at|date:"d M Y" }}</span></div>
+                    </div>
+                    <div class="item-action-stack">
+                        <a href="{% url 'material_detail' item.id %}" class="btn btn-gradient btn-sm">Open</a>
+                        {% if is_student and item.is_video %}{% if item.id in watched_material_ids %}<span class="badge-soft success text-center">Watched</span>{% else %}<span class="badge-soft warning text-center">Pending</span>{% endif %}{% endif %}
+                    </div>
+                </div>
+                {% empty %}<div class="empty-state-small">No materials have been uploaded yet.</div>{% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4">
+        <div class="content-panel h-100">
+            <div class="panel-header"><div><h3>Assignments</h3><p>Track deadlines, submissions, and grading.</p></div></div>
+            <div class="stack-space">
+                {% for item in assignments %}
+                <div class="list-surface-item">
+                    <div>
+                        <div class="fw-semibold mb-1">{{ item.title }}</div>
+                        <div class="small card-muted mb-2">{{ item.description|truncatechars:96 }}</div>
+                        <div class="classroom-meta"><span><i class="fa-regular fa-calendar"></i> {{ item.deadline|date:"d M Y, h:i A" }}</span><span><i class="fa-solid fa-award"></i> {{ item.total_marks }} marks</span></div>
+                    </div>
+                    <div>{% if is_teacher %}<a href="{% url 'submission_list' item.id %}" class="btn btn-soft btn-sm">Submissions</a>{% else %}<a href="{% url 'submit_assignment' item.id %}" class="btn btn-gradient btn-sm">Submit</a>{% endif %}</div>
+                </div>
+                {% empty %}<div class="empty-state-small">No assignments available yet.</div>{% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4">
+        <div class="content-panel h-100">
+            <div class="panel-header"><div><h3>Announcements</h3><p>Important classroom updates and notices.</p></div></div>
+            <div class="announcement-stack">
+                {% for item in announcements %}
+                <div class="announcement-dashboard-card"><div class="announcement-badge-icon"><i class="fa-solid fa-bullhorn"></i></div><div class="announcement-body"><h6>{{ item.title }}</h6><p>{{ item.message }}</p></div></div>
+                {% empty %}<div class="empty-state-small">No announcements posted yet.</div>{% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mt-1">
+    <div class="col-xl-6">
+        <div class="content-panel h-100">
+            <div class="panel-header"><div><h3>Quizzes</h3><p>Manage quiz questions or start an available test.</p></div></div>
+            <div class="stack-space">
+                {% for q in quizzes %}
+                <div class="list-surface-item"><div><div class="fw-semibold mb-1">{{ q.title }}</div><div class="small card-muted">{{ q.description|default:'No quiz description added.'|truncatechars:96 }}</div></div><div>{% if is_teacher %}<a href="{% url 'add_quiz_question' q.id %}" class="btn btn-soft btn-sm">Manage</a>{% else %}<a href="{% url 'attempt_quiz' q.id %}" class="btn btn-gradient btn-sm">Attempt</a>{% endif %}</div></div>
+                {% empty %}<div class="empty-state-small">No quizzes are available yet.</div>{% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-6">
+    <div class="glass-card h-100">
+        {% if is_teacher %}
+            <div class="section-header mb-3">
+                <div>
+                    <h3>Enrolled students</h3>
+                    <p>Students currently joined in this classroom.</p>
+                </div>
+            </div>
+
+            <div class="stack-list mb-4">
+                {% for student in students %}
+                    <div class="student-row">
+                        <div>
+                            <div class="fw-semibold">{{ student.get_full_name|default:student.username }}</div>
+                            <div class="small text-secondary-emphasis">@{{ student.username }}</div>
+                        </div>
+                        <div class="d-flex gap-2 flex-wrap align-items-center">
+                            <span class="badge-soft neutral">Student</span>
+                            <a href="{% url 'teacher_view_student_profile' student.id %}" class="btn btn-soft btn-sm">
+                                View Profile
+                            </a>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="empty-card">No students enrolled in this classroom yet.</div>
+                {% endfor %}
+            </div>
+
+            <div class="section-header mb-3">
+                <div>
+                    <h3>Video learning status</h3>
+                    <p>Check which students watched uploaded classroom videos.</p>
+                </div>
+            </div>
+
+            <div class="stack-list">
+                {% for row in teacher_video_status %}
+                    <div class="video-status-block">
+                        <div class="d-flex flex-wrap justify-content-between gap-2 align-items-center mb-3">
+                            <div>
+                                <div class="fw-semibold">{{ row.material.title }}</div>
+                                <div class="small text-secondary-emphasis">{{ row.watched_count }}/{{ row.total_students }} students watched</div>
+                            </div>
+                            <div class="d-flex gap-2 flex-wrap">
+                                <span class="badge-soft success">Watched {{ row.watched_count }}</span>
+                                <span class="badge-soft warning">Pending {{ row.pending_count }}</span>
+                            </div>
+                        </div>
+
+                        <div class="stack-list">
+                            {% for status in row.statuses %}
+                                <div class="student-row compact-row">
+                                    <div>
+                                        <div class="fw-semibold">{{ status.student.get_full_name|default:status.student.username }}</div>
+                                        <div class="small text-secondary-emphasis">Progress: {{ status.progress_seconds }} sec</div>
+                                    </div>
+                                    {% if status.viewed %}
+                                        <span class="badge-soft success">Viewed</span>
+                                    {% else %}
+                                        <span class="badge-soft warning">Pending</span>
+                                    {% endif %}
+                                </div>
+                            {% empty %}
+                                <div class="empty-card">No student watch activity yet.</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="empty-card">No video materials uploaded yet.</div>
+                {% endfor %}
+            </div>
+
+        {% else %}
+            <div class="section-header mb-3">
+                <div>
+                    <h3>Student learning overview</h3>
+                    <p>You can access all materials, assignments, quizzes, and announcements from this classroom.</p>
+                </div>
+            </div>
+            <div class="empty-card">
+                You are enrolled in this classroom.
+            </div>
+        {% endif %}
+    </div>
+</div>
+</div>
+{% endblock %}

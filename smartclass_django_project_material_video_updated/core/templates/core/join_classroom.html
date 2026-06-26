@@ -1,0 +1,20 @@
+{% extends 'core/base.html' %}
+{% block title %}Join Classroom | SmartClass{% endblock %}
+{% block page_title %}Join classroom{% endblock %}
+{% block page_subtitle %}Enter the class code shared by your teacher to connect instantly to the classroom workspace.{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8 col-xl-6">
+        <div class="center-form-card text-center">
+            <span class="hero-badge mx-auto mb-3"><i class="fa-solid fa-right-to-bracket"></i> Student access</span>
+            <h3 class="mb-2">Join a classroom with code</h3>
+            <p class="card-muted mb-4">Paste the classroom code below and connect to your subject workspace.</p>
+            <form method="post">
+                {% csrf_token %}
+                {% include 'core/partials/form_fields.html' with form=form %}
+                <button class="btn btn-gradient mt-2" type="submit">Join classroom</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

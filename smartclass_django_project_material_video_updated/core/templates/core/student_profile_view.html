@@ -1,0 +1,55 @@
+{% extends 'core/base.html' %}
+{% block title %}My Student Profile{% endblock %}
+{% block page_title %}My Student Profile{% endblock %}
+{% block page_subtitle %}Your academic profile and AI performance summary.{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+    <div class="col-lg-8">
+        <div class="content-panel">
+            <div class="panel-header">
+                <div>
+                    <h3>{{ student_profile_obj.student_name|default:request.user.get_full_name|default:request.user.username }}</h3>
+                    <p>Academic and personal learning profile</p>
+                </div>
+                <div class="panel-actions">
+                    <a href="{% url 'student_profile_edit' %}" class="btn btn-gradient btn-sm">Edit Profile</a>
+                </div>
+            </div>
+
+            <div class="row g-3">
+                <div class="col-md-6"><strong>Roll Number:</strong> {{ student_profile_obj.roll_number }}</div>
+                <div class="col-md-6"><strong>Division:</strong> {{ student_profile_obj.division }}</div>
+                <div class="col-md-6"><strong>Batch:</strong> {{ student_profile_obj.batch }}</div>
+                <div class="col-md-6"><strong>Department:</strong> {{ student_profile_obj.department }}</div>
+                <div class="col-md-6"><strong>Semester:</strong> {{ student_profile_obj.semester }}</div>
+                <div class="col-md-6"><strong>Internship:</strong> {% if student_profile_obj.internship %}Yes{% else %}No{% endif %}</div>
+                <div class="col-md-6"><strong>Internship Company:</strong> {{ student_profile_obj.internship_company }}</div>
+                <div class="col-md-6"><strong>Internship Domain:</strong> {{ student_profile_obj.internship_domain }}</div>
+                <div class="col-md-6"><strong>Marks:</strong> {{ student_profile_obj.marks }}</div>
+                <div class="col-md-6"><strong>Attendance %:</strong> {{ student_profile_obj.attendance_percentage }}</div>
+                <div class="col-md-6"><strong>Quiz Average:</strong> {{ student_profile_obj.quiz_average }}</div>
+                <div class="col-md-6"><strong>Assignment Average:</strong> {{ student_profile_obj.assignment_average }}</div>
+                <div class="col-12"><strong>Skills:</strong> {{ student_profile_obj.skills|linebreaksbr }}</div>
+                <div class="col-12"><strong>Strengths:</strong> {{ student_profile_obj.strengths|linebreaksbr }}</div>
+                <div class="col-12"><strong>Improvement Areas:</strong> {{ student_profile_obj.improvement_areas|linebreaksbr }}</div>
+                <div class="col-12"><strong>Career Goal:</strong> {{ student_profile_obj.career_goal }}</div>
+                <div class="col-md-6"><strong>Guardian Name:</strong> {{ student_profile_obj.guardian_name }}</div>
+                <div class="col-md-6"><strong>Guardian Contact:</strong> {{ student_profile_obj.guardian_contact }}</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="content-panel">
+            <h3>AI Performance Analysis</h3>
+            <p class="mb-3">Auto-generated from academic profile.</p>
+
+            <div class="mb-3"><strong>Predicted Band:</strong> {{ student_profile_obj.predicted_band }}</div>
+            <div class="mb-3"><strong>Risk Level:</strong> {{ student_profile_obj.risk_level }}</div>
+            <div><strong>Suggestions:</strong></div>
+            <div class="mt-2">{{ student_profile_obj.ai_suggestions|linebreaksbr }}</div>
+        </div>
+    </div>
+</div>
+{% endblock %}

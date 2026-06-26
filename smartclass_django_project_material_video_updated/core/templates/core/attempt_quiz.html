@@ -1,0 +1,38 @@
+{% extends 'core/base.html' %}
+{% block title %}Attempt Quiz | SmartClass{% endblock %}
+{% block page_title %}Attempt quiz{% endblock %}
+{% block page_subtitle %}Read each question carefully and submit within the timer.{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-xl-10">
+        <div class="surface-card quiz-header-modern mb-4">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                <div>
+                    <span class="hero-badge mb-2"><i class="fa-solid fa-clipboard-question"></i> Quiz attempt</span>
+                    <h3 class="mb-1">{{ quiz.title }}</h3>
+                    <p class="card-muted mb-0">{{ quiz.description|default:'Answer all questions and submit before the timer ends.' }}</p>
+                </div>
+                <div class="quiz-timer-card text-center"><div class="small text-uppercase card-muted">Time left</div><div class="timer-value" id="quizTimer">15:00</div></div>
+            </div>
+        </div>
+        <div class="content-panel">
+            <form method="post" id="quizForm">
+                {% csrf_token %}
+                <input type="hidden" id="quizDuration" value="900">
+                {% for q in questions %}
+                <div class="quiz-question-card-modern">
+                    <div class="fw-semibold fs-5 mb-3">Q{{ forloop.counter }}. {{ q.question_text }}</div>
+                    <div class="row g-3">
+                        <div class="col-md-6"><label class="quiz-option-modern"><input type="radio" name="question_{{ q.id }}" value="A"><span>{{ q.option_a }}</span></label></div>
+                        <div class="col-md-6"><label class="quiz-option-modern"><input type="radio" name="question_{{ q.id }}" value="B"><span>{{ q.option_b }}</span></label></div>
+                        <div class="col-md-6"><label class="quiz-option-modern"><input type="radio" name="question_{{ q.id }}" value="C"><span>{{ q.option_c }}</span></label></div>
+                        <div class="col-md-6"><label class="quiz-option-modern"><input type="radio" name="question_{{ q.id }}" value="D"><span>{{ q.option_d }}</span></label></div>
+                    </div>
+                </div>
+                {% endfor %}
+                <button class="btn btn-gradient" type="submit">Submit quiz</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

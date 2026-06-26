@@ -1,0 +1,25 @@
+{% extends 'core/base.html' %}
+{% block title %}Submissions | SmartClass{% endblock %}
+{% block page_title %}Assignment submissions{% endblock %}
+{% block page_subtitle %}Review student submissions, files, and marks for {{ assignment.title }}.{% endblock %}
+{% block content %}
+<div class="content-panel">
+    <div class="panel-header"><div><h3>{{ assignment.title }}</h3><p>Open student files, review timestamps, and grade the work.</p></div></div>
+    <div class="table-responsive table-wrap-modern">
+        <table class="table align-middle modern-table mb-0">
+            <thead><tr><th>Student</th><th>Submitted at</th><th>File</th><th>Marks</th><th>Action</th></tr></thead>
+            <tbody>
+                {% for item in submissions %}
+                <tr>
+                    <td><div class="fw-semibold">{{ item.student.username }}</div></td>
+                    <td>{{ item.submitted_at|date:"d M Y, h:i A" }}</td>
+                    <td><a href="{{ item.answer_file.url }}" target="_blank" class="btn btn-soft btn-sm">Open file</a></td>
+                    <td>{{ item.marks|default:'-' }}</td>
+                    <td><a href="{% url 'grade_submission' item.id %}" class="btn btn-gradient btn-sm">Grade</a></td>
+                </tr>
+                {% empty %}<tr><td colspan="5" class="text-center py-4">No submissions available yet.</td></tr>{% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

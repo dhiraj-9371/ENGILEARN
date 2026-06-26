@@ -1,0 +1,48 @@
+{% extends 'core/base.html' %}
+{% block title %}Reports | SmartClass{% endblock %}
+{% block page_title %}Reports and analytics{% endblock %}
+{% block page_subtitle %}View classroom statistics, attendance distribution, and overall performance insights.{% endblock %}
+{% block content %}
+<div class="dashboard-hero mb-4">
+    <div class="hero-card compact-hero">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+            <div>
+                <div class="hero-badge"><i class="fa-solid fa-chart-pie"></i> Analytics overview</div>
+                <h2 class="hero-title mb-1">Performance overview</h2>
+                <p class="hero-text mb-0">Professional report layout with clean cards, summary metrics, and chart-based visualization.</p>
+            </div>
+            <span class="badge-soft info">Live academic insights</span>
+        </div>
+    </div>
+</div>
+<div class="row g-4 mb-4">
+    <div class="col-md-3"><div class="dashboard-stat-card h-100"><div class="stat-label">Total classes</div><div class="stat-value">{{ classes|length }}</div><div class="stat-subtext">Visible classrooms in your role scope</div></div></div>
+    <div class="col-md-3"><div class="dashboard-stat-card h-100"><div class="stat-label">Average quiz score</div><div class="stat-value">{{ avg_score|floatformat:2 }}</div><div class="stat-subtext">Average attempt score across the workspace</div></div></div>
+    <div class="col-md-3"><div class="dashboard-stat-card h-100"><div class="stat-label">Attendance entries</div><div class="stat-value">{% for x in attendance_summary %}{{ x.total }}{% if not forloop.last %}+{% endif %}{% empty %}0{% endfor %}</div><div class="stat-subtext">Total attendance records counted</div></div></div>
+    <div class="col-md-3"><div class="dashboard-stat-card h-100"><div class="stat-label">Video views</div><div class="stat-value">{{ video_view_total }}</div><div class="stat-subtext">Tracked completed video lessons</div></div></div>
+</div>
+<div class="row g-4">
+    <div class="col-xl-7">
+        <div class="content-panel h-100">
+            <div class="panel-header"><div><h3>Attendance summary</h3><p>Status split shown in a visual chart and quick list.</p></div></div>
+            <div class="chart-wrap mb-4"><canvas id="attendanceChart"></canvas></div>
+            <div class="stack-space">{% for item in attendance_summary %}<div class="info-tile"><span>{{ item.status|title }}</span><strong>{{ item.total }}</strong></div>{% empty %}<div class="empty-state-small">No attendance records available yet.</div>{% endfor %}</div>
+        </div>
+    </div>
+    <div class="col-xl-5">
+        <div class="content-panel h-100">
+            <div class="panel-header"><div><h3>Class overview</h3><p>Current classroom list in your scope.</p></div></div>
+            <div class="stack-space">{% for class in classes %}<div class="info-tile"><span>{{ class.title }}</span><strong>{{ class.subject }}</strong></div>{% empty %}<div class="empty-state-small">No classes available.</div>{% endfor %}</div>
+        </div>
+    </div>
+</div>
+<div class="row g-4 mt-1">
+    <div class="col-xl-12">
+        <div class="content-panel h-100">
+            <div class="panel-header"><div><h3>Content library summary</h3><p>Handwritten notes, study materials, previous papers, and videos grouped by category.</p></div></div>
+            <div class="row g-3">{% for item in material_stats %}<div class="col-md-6 col-xl-3"><div class="info-tile h-100"><span>{{ item.material_type|title }}</span><strong>{{ item.total }}</strong></div></div>{% empty %}<div class="col-12"><div class="empty-state-small">No material records available yet.</div></div>{% endfor %}</div>
+        </div>
+    </div>
+</div>
+<script type="application/json" id="attendanceChartData">[{% for item in attendance_summary %}{"label":"{{ item.status|title }}","value":{{ item.total }}}{% if not forloop.last %},{% endif %}{% endfor %}]</script>
+{% endblock %}

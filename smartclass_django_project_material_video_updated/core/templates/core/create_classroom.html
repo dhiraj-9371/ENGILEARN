@@ -1,0 +1,33 @@
+{% extends 'core/base.html' %}
+{% block title %}Create Classroom | SmartClass{% endblock %}
+{% block page_title %}Create classroom{% endblock %}
+{% block page_subtitle %}Set up a new classroom space with title, subject, and description using a clean guided form.{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-xl-10 col-xxl-8">
+        <div class="form-layout-card">
+            <div class="form-layout-side">
+                <span class="hero-badge"><i class="fa-solid fa-school-circle-check"></i> Teacher setup</span>
+                <h3>Create a polished classroom space</h3>
+                <p>After saving, ENGI-LEARN will automatically generate a unique class code for students to join.</p>
+                <div class="mini-feature-list">
+                    <div class="mini-feature-item"><i class="fa-solid fa-hashtag"></i><span>Auto-generated class code</span></div>
+                    <div class="mini-feature-item"><i class="fa-solid fa-folder-open"></i><span>Material and assignment ready</span></div>
+                    <div class="mini-feature-item"><i class="fa-solid fa-user-check"></i><span>Attendance and quiz workflow</span></div>
+                </div>
+            </div>
+            <div class="form-layout-main">
+                <div class="panel-header"><div><h3>Create a new classroom</h3><p>Fill in the details below and publish the class.</p></div></div>
+                <form method="post">
+                    {% csrf_token %}
+                    {% include 'core/partials/form_fields.html' with form=form %}
+                    <div class="d-flex gap-3 flex-wrap mt-3">
+                        <button class="btn btn-gradient" type="submit">Create classroom</button>
+                        <a href="{% url 'classroom_list' %}" class="btn btn-soft">Back to classrooms</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

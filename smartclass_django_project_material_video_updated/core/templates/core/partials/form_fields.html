@@ -1,0 +1,11 @@
+{% for field in form %}
+<div class="mb-3">
+    <label class="form-label fw-semibold">{{ field.label }}{% if field.field.required %} <span class="text-danger">*</span>{% endif %}</label>
+    {{ field }}
+    {% if field.help_text %}<div class="form-help mt-2">{{ field.help_text }}</div>{% endif %}
+    {% for error in field.errors %}<div class="form-error mt-1">{{ error }}</div>{% endfor %}
+</div>
+{% endfor %}
+{% for error in form.non_field_errors %}
+    <div class="form-error mb-3">{{ error }}</div>
+{% endfor %}
